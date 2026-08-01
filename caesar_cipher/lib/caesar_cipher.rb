@@ -1,4 +1,3 @@
-require('pry-byebug')
 DOWNCASE_LOWER = 'a'.ord
 DOWNCASE_UPPER = 'z'.ord
 UPCASE_LOWER = 'A'.ord
@@ -19,11 +18,7 @@ def shift_letter(char, shift)
 end
 
 def caesar_cipher(string, shift)
-  binding.pry
   string.split('').map do |char|
     shift_letter(char, shift)
   end.join
 end
-
-result = caesar_cipher('What a string!', -1)
-puts result
