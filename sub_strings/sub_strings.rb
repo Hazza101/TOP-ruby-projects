@@ -1,4 +1,3 @@
-require 'pry-byebug'
 def find_substring(phrase, sub)
   count = 0
   sub_index = 0
@@ -18,7 +17,6 @@ end
 
 def find_substrings(word, dictionary)
   downcase_word = word.downcase
-  binding.pry
   dictionary.each_with_object({}) do |substring, counter|
     count = find_substring(downcase_word, substring)
     counter[substring] = count if count > 0
