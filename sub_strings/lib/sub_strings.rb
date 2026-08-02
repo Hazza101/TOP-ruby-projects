@@ -23,13 +23,3 @@ def find_substrings(word, dictionary)
     counter
   end
 end
-
-dictionary = %w[below down go going horn how howdy it i low own part partner sit]
-word_one = 'below'
-
-result = find_substrings(word_one, dictionary)
-puts result
-word_two = "Howdy partner, sit down! How's it going?"
-
-result_two = find_substrings(word_two, dictionary)
-puts result_two
