@@ -23,3 +23,12 @@ find_substrings(phrase, dictionary)
 #=> {"below" => 1, "low" => 1}
 ```
 
+### Project: Stock Picker
+Given a list of stock prices for each day, determine the best day to buy and sell that returns the maximum profit.
+
+#### Usage
+```ruby
+stock_prices = [17, 3, 6, 9, 15, 8, 6, 1, 10]
+stock_picker(stock_prices
+#=> [1, 4]
+```
