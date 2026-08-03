@@ -1,20 +1,19 @@
-def bubble_sort(list)
+def bubble_sort(list, callback = nil)
+  callback = ->(a, b) { a > b } if callback.nil?
   sorted = false
   until sorted
     sorted = true
-    for i in 0...list.length - 1 do
+    (0...list.length - 1).each do |i|
       first = list[i]
       second = list[i + 1]
-      next unless first > second
+      next unless callback[first, second]
 
-      tmp = list[i]
-      list[i] = list[i + 1]
-      list[i + 1] = tmp
+      list[i], list[i + 1] = list[i + 1], list[i]
       sorted = false
     end
   end
   list
 end
 
-result = bubble_sort([4, 3, 78, 2, 0, 2])
+result = bubble_sort([4, 3, 78, 2, 0, 2], ->(a, b) { a < b })
 p result
