@@ -1,25 +1,29 @@
-def quick_sort(list, callback = nil)
-  callback = ->(a, b) { a > b } if callback.nil?
-  if list.length < 2
-    return list
+def partition(array, start, e, callback = nil)
+  callback = ->(a, b) { a >= b } if callback.nil?
+  pivot = array[start]
+  low = start + 1
+  high = e
+  while true
+    high -= 1 while low <= high and callback[array[high], pivot]
+    low += 1 while low <= high and callback[pivot, array[low]]
+
+    break unless low <= high
+
+    array[low], array[high] = array[high], array[low]
+
   end
-  pivot = list[0] 
-  left = Array::new
-  right = Array::new
-  (1...list.length).each do |i|
-    if callback[list[i] ,pivot]
-      left.push(list[i])
-    else
-      right.push(list[i])
-    end
-  end
-  left = quick_sort(left, callback)
-  right = quick_sort(right, callback)
-
-  left + [pivot] + right
-
-
+  array[start], array[high] = array[high], array[start]
+  high
 end
 
-result = quick_sort([4, 3, 78, 2, 0, 2], ->(a, b) { a < b })
-p result
+def quick_sort(array, s, e)
+  return if s >= e
+
+  p = partition(array, s, e)
+  quick_sort(array, s, p)
+  quick_sort(array, p + 1, e)
+end
+
+array = [4, 3, 78, 2, 0, 2]
+quick_sort(array, 0, 5)
+p array
