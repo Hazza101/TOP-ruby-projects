@@ -1,20 +1,15 @@
 require_relative 'lib/board'
-
-module Printing
-	def self.display_board(board)
-		m = board.size	
-		n = board[0].size
-		(0...m).each do |i|
-			(0...n).each do |j|
-				val = board[i][j]
-				print "#{val} "
-			end
-			print "\n"
-		end
-	end
-end
+require_relative 'lib/printing'
 
 board = Board.new
-
-Printing.display_board(board.board)
+while true
+	Printing.display_board(board.board)
+	i, j = Printing.prompt_until_correct
+	is_valid_move = board.make_move(i, j)
+	if not is_valid_move
+		puts "Please make a valid move"
+		next
+	end
+	puts "result: #{res}"
+end
 
