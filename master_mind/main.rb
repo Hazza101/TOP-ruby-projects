@@ -1,4 +1,5 @@
 require 'set'
+require 'pry-byebug'
 
 class Row
 
@@ -35,13 +36,20 @@ end
 
 def compare_rows(original, guess)
 	result = []
+	remainding = []
 	(0...4).each do |i| 
 		if original[i] == guess[i]
 			result.push('white')
-		elsif original.contains?(guess[i])
+		else
+			remainding.push(original[i])
+		end
+	end
+	guess.each do |peg|
+		if remainding.include?(peg)
 			result.push('black')
 		end
 	end
+
 	result
 end
 
@@ -71,11 +79,46 @@ def get_row_from_user
 		input = gets.chomp
 		begin
 			row = create_row(input)
-			valid = true
+			return row
 			rescue
 				puts "Invalid input"
 		end
 	end
 end
 
-get_row_from_user
+def create_mastermind_row
+	array = (1..6).to_a.shuffle.take(4)
+	Row.new(*array)
+end
+
+def print_result_banner(result)
+	if result
+		puts "Well done you won"
+	else
+		puts "unlucky you lost"
+	end
+end
+
+def game_loop(max_guesses = 10)
+	guesses = 0
+	mastermind_row = create_mastermind_row
+	while guesses < max_guesses
+		p mastermind_row
+		row = get_row_from_user
+		result = compare_rows(mastermind_row, row)
+		if result.size == 4 and result.all? { |val| val == 'white' }
+			return true
+		end
+		p result
+		guesses += 1
+	end
+	return false
+end
+
+
+#binding.pry
+res = game_loop
+print_result_banner(res)
+
+
+
