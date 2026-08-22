@@ -1,5 +1,6 @@
 require 'set'
 require 'pry-byebug'
+require 'colorize'
 
 class Row
 
@@ -34,6 +35,37 @@ class Row
 
 end
 
+class PegDisplay
+	COLOR_MAP = {
+		1 => :red,
+		2 => :blue,
+		3 => :green,
+		4 => :cyan,
+		5 => :yellow,
+		6 => :magenta
+	}
+	def self.show_peg(peg)
+		color = COLOR_MAP[peg]
+		"●".colorize(color)
+	end
+
+	def self.show_pegs(row)
+		print "Pegs: "
+		puts row.map { |peg| self.show_peg(peg) }.join(" ")
+	end
+
+	def self.display_feedback(result)
+		pegs = result.shuffle.map do |color|
+ 			if color == 'white'
+				"●".colorize(:white)
+ 			else
+				"○".colorize(:white)
+			end
+		end
+		puts "Results: #{ pegs.join(' ')}"
+	end
+end
+
 def compare_rows(original, guess)
 	result = []
 	remainding = []
@@ -44,7 +76,7 @@ def compare_rows(original, guess)
 			remainding.push(original[i])
 		end
 	end
-	guess.each do |peg|
+	guess.uniq.each do |peg|
 		if remainding.include?(peg)
 			result.push('black')
 		end
@@ -103,15 +135,16 @@ def game_loop(max_guesses = 10)
 	guesses = 0
 	mastermind_row = create_mastermind_row
 	while guesses < max_guesses
-		p mastermind_row
 		row = get_row_from_user
+		PegDisplay.show_pegs(row)
 		result = compare_rows(mastermind_row, row)
 		if result.size == 4 and result.all? { |val| val == 'white' }
 			return true
 		end
-		p result
+		PegDisplay.display_feedback(result)
 		guesses += 1
 	end
+	PegDisplay.show_pegs(mastermind_row)
 	return false
 end
 
@@ -119,6 +152,8 @@ end
 #binding.pry
 res = game_loop
 print_result_banner(res)
+
+
 
 
 
