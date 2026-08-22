@@ -104,10 +104,10 @@ def create_row(row)
 	row_object = Row.new(*row)		
 end
 
-def get_row_from_user
+def get_row_from_user(guess)
 	valid = false
 	while !valid
-		print "Row guess> "
+		print "Row guess [#{guess}]> "
 		input = gets.chomp
 		begin
 			row = create_row(input)
@@ -135,7 +135,7 @@ def game_loop(max_guesses = 10)
 	guesses = 0
 	mastermind_row = create_mastermind_row
 	while guesses < max_guesses
-		row = get_row_from_user
+		row = get_row_from_user(guesses+1)
 		PegDisplay.show_pegs(row)
 		result = compare_rows(mastermind_row, row)
 		if result.size == 4 and result.all? { |val| val == 'white' }
