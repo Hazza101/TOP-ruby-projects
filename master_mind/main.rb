@@ -2,69 +2,8 @@ require 'set'
 require 'pry-byebug'
 require 'colorize'
 
-class Row
-
-	include Enumerable
-
-	def initialize(peg1, peg2, peg3, peg4)
-		white_list = [1,2,3,4,5,6]
-		if !white_list.include?(peg1) or !white_list.include?(peg2) or !white_list.include?(peg3) or !white_list.include?(peg4)
-			raise ArgumentException, "Number must 1, 2, 3, 4, 5, 6"
-		end
-		@row_list = [peg1, peg2, peg3, peg4]
-		@row_set = Set.new(@row_list)
-	end
-
-	def each(&block)
-		if block_given?
-			@row_list.each(&block)
-		else
-			to_enum(:row_set)			
-		end
-	end
-
-	def [](index)
-		@row_list[index]
-	end
-
-	def contains?(peg)
-		return @row_set.include?(peg)
-	end
-
-
-
-end
-
-class PegDisplay
-	COLOR_MAP = {
-		1 => :red,
-		2 => :blue,
-		3 => :green,
-		4 => :cyan,
-		5 => :yellow,
-		6 => :magenta
-	}
-	def self.show_peg(peg)
-		color = COLOR_MAP[peg]
-		"●".colorize(color)
-	end
-
-	def self.show_pegs(row)
-		print "Pegs: "
-		puts row.map { |peg| self.show_peg(peg) }.join(" ")
-	end
-
-	def self.display_feedback(result)
-		pegs = result.shuffle.map do |color|
- 			if color == 'white'
-				"●".colorize(:white)
- 			else
-				"○".colorize(:white)
-			end
-		end
-		puts "Results: #{ pegs.join(' ')}"
-	end
-end
+require_relative 'lib/row'
+require_relative 'lib/peg_display'
 
 def compare_rows(original, guess)
 	result = []
@@ -118,10 +57,6 @@ def get_row_from_user(guess)
 	end
 end
 
-def create_mastermind_row
-	array = (1..6).to_a.shuffle.take(4)
-	Row.new(*array)
-end
 
 def print_result_banner(result)
 	if result
@@ -131,9 +66,26 @@ def print_result_banner(result)
 	end
 end
 
-def game_loop(max_guesses = 10)
+
+class RobotCodemaker
+	def initialize
+		@code = nil
+	end
+
+	def create_mastermind_row
+		array = (1..6).to_a.shuffle.take(4)
+		@code = Row.new(*array)
+		return @code
+	end
+
+	def return_mastermind_row
+		@code
+	end
+end
+
+def game_loop(player1, player2 = nil, max_guesses = 10)
 	guesses = 0
-	mastermind_row = create_mastermind_row
+	mastermind_row = player1.create_mastermind_row
 	while guesses < max_guesses
 		row = get_row_from_user(guesses+1)
 		PegDisplay.show_pegs(row)
@@ -150,7 +102,8 @@ end
 
 
 #binding.pry
-res = game_loop
+player1 = RobotCodemaker.new
+res = game_loop(player1)
 print_result_banner(res)
 
 
