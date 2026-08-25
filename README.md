@@ -29,6 +29,17 @@ Given a list of stock prices for each day, determine the best day to buy and sel
 #### Usage
 ```ruby
 stock_prices = [17, 3, 6, 9, 15, 8, 6, 1, 10]
-stock_picker(stock_prices
+stock_picker(stock_prices)
 #=> [1, 4]
 ```
+
+### Project: Bubble Sort
+Bubble sort is a sorting algorithm that compares adjacent cells in a list and swaps them based on the sorting condition. This implementation allows for a lambda function that specifies the comparison.
+
+#### Usage
+```ruby
+numbers = [4, 3, 78, 2, 0, 2]
+bubble_sort(numbers, ->(a, b) { a < b }) # lambda function for descending sort
+#=> [78, 4, 3, 2, 2, 0]
+```
+
