@@ -43,3 +43,8 @@ bubble_sort(numbers, ->(a, b) { a < b }) # lambda function for descending sort
 #=> [78, 4, 3, 2, 2, 0]
 ```
 
+### Project: Tic Tac Toe
+Unfinished project
+
+### Project: Mastermind
+Need to add Computer Code breaker
