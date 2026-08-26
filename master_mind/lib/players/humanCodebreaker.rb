@@ -14,7 +14,7 @@ class HumanCodebreaker
     end
   end
 
-  def recieve_feedback(feedback)
+  def recieve_feedback(_feedback)
     nil
   end
 end
