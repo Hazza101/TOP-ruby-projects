@@ -1,5 +1,6 @@
 require_relative 'lib/board'
 require_relative 'lib/printing'
+require_relative 'lib/players'
 
 board = Board.new
 while true
@@ -10,6 +11,7 @@ while true
 		puts "Please make a valid move"
 		next
 	end
+  res = board.check_winner?
 	puts "result: #{res}"
 end
 
