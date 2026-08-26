@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'set'
 require 'pry-byebug'
 require 'colorize'
@@ -5,6 +7,9 @@ require 'colorize'
 require_relative 'lib/row'
 require_relative 'lib/peg_display'
 require_relative 'lib/helper'
+require_relative 'lib/players/humanCodemaker'
+require_relative 'lib/players/humanCodebreaker'
+require_relative 'lib/players/robotCodemaker'
 
 def print_result_banner(result)
   if result
@@ -14,79 +19,15 @@ def print_result_banner(result)
   end
 end
 
-# RobotCodemaker class which allows the program to automatically generate the code to be guessed
-class RobotCodemaker
-  def initialize
-    @code = nil
-  end
-
-  def create_mastermind_row
-    array = (1..6).to_a.shuffle.take(4)
-    @code = Row.new(*array)
-    @code
-  end
-
-  def return_mastermind_row
-    @code
-  end
-end
-
-# HumanCodebreaker class which allows the user to input their guesses for the code
-class HumanCodebreaker
-  def get_row_guess(guess)
-    valid = false
-    while !valid
-      print "Row guess [#{guess}]> "
-      input = gets.chomp
-      begin
-        row = Helper.create_row(input)
-        return row
-        rescue
-          puts 'Invalid input'
-      end
-    end
-  end
-
-  def recieve_feedback(feedback)
-    nil
-  end
-end
-
-# HumanCodemaker class which allows the user to input the mastermind code
-class HumanCodemaker
-  def initialize
-    @code = nil
-  end
-
-  def create_mastermind_row
-    valid = false
-    while !valid
-      print 'Choose mastermind code> '
-      input = gets.chomp
-      begin
-        @code = Helper.create_mastermind_row(input)
-        return @code
-        rescue
-          puts 'Invalid input'
-      end
-    end
-  end
-
-  def return_mastermind_row
-    @code
-  end
-end
-
-def game_loop(player1, player2 , max_guesses = 10)
+def game_loop(player1, player2, max_guesses = 10)
   guesses = 0
   mastermind_row = player1.create_mastermind_row
   while guesses < max_guesses
-    row = player2.get_row_guess(guesses+1)
+    row = player2.get_row_guess(guesses + 1)
     PegDisplay.show_pegs(row)
     result = Helper.compare_rows(mastermind_row, row)
-    if result.size == 4 and result.all? { |val| val == 'white' }
-      return true
-    end
+    return true if result.size == 4 && result.all? { |val| val == 'white' }
+
     player2.recieve_feedback(result)
     PegDisplay.display_feedback(result)
     guesses += 1
@@ -95,9 +36,8 @@ def game_loop(player1, player2 , max_guesses = 10)
   false
 end
 
-
-#binding.pry
-player1 = HumanCodemaker.new
+# binding.pry
+player1 = RobotCodemaker.new
 player2 = HumanCodebreaker.new
 res = game_loop(player1, player2)
 print_result_banner(res)
