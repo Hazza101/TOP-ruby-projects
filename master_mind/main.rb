@@ -14,6 +14,7 @@ def print_result_banner(result)
   end
 end
 
+# RobotCodemaker class which allows the program to automatically generate the code to be guessed
 class RobotCodemaker
   def initialize
     @code = nil
@@ -22,7 +23,7 @@ class RobotCodemaker
   def create_mastermind_row
     array = (1..6).to_a.shuffle.take(4)
     @code = Row.new(*array)
-    return @code
+    @code
   end
 
   def return_mastermind_row
@@ -30,6 +31,7 @@ class RobotCodemaker
   end
 end
 
+# HumanCodebreaker class which allows the user to input their guesses for the code
 class HumanCodebreaker
   def get_row_guess(guess)
     valid = false
@@ -40,16 +42,17 @@ class HumanCodebreaker
         row = Helper.create_row(input)
         return row
         rescue
-          puts "Invalid input"
+          puts 'Invalid input'
       end
     end
   end
 
   def recieve_feedback(feedback)
-    return nil
+    nil
   end
 end
 
+# HumanCodemaker class which allows the user to input the mastermind code
 class HumanCodemaker
   def initialize
     @code = nil
@@ -58,19 +61,19 @@ class HumanCodemaker
   def create_mastermind_row
     valid = false
     while !valid
-      print "Choose mastermind code> "
+      print 'Choose mastermind code> '
       input = gets.chomp
       begin
         @code = Helper.create_mastermind_row(input)
         return @code
         rescue
-          puts "Invalid input"
+          puts 'Invalid input'
       end
     end
   end
 
   def return_mastermind_row
-    return @code
+    @code
   end
 end
 
@@ -89,7 +92,7 @@ def game_loop(player1, player2 , max_guesses = 10)
     guesses += 1
   end
   PegDisplay.show_pegs(mastermind_row)
-  return false
+  false
 end
 
 
