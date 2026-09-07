@@ -2,6 +2,7 @@ require_relative './players'
 
 class Board
   attr_reader :board
+  attr_reader :turn
 
   def initialize
     @board = Array.new(3) { Array.new(3, PLAYERS::NONE) }
